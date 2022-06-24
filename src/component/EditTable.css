@@ -1,0 +1,45 @@
+.footer {
+    flex: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+#cancelBtn {
+    width: 40px;
+    height: 25px;
+    margin: 10px;
+    border: none;
+    background-color: rgb(206, 52, 14);
+    color: white;
+    border-radius: 4px;
+    font-size: 10px;
+    cursor: pointer;
+  }
+
+  #oksiBtn {
+    width: 40px;
+    height: 25px;
+    margin: 10px;
+    border: none;
+    background-color: rgb(20, 206, 14);
+    color: white;
+    border-radius: 4px;
+    font-size: 10px;
+    cursor: pointer;
+  }
+
+
+  .input{
+    width: 200px;
+    margin-top: 20px;
+    margin-left: 600px;
+    height: 30px;
+    position: relative;
+  }
+  .input-header p{
+    margin-left: 10px;
+    margin-top: 25px;
+    position: relative;
+    
+  }

@@ -1,14 +1,8 @@
-import {ChangeEvent, useEffect, useState, useRef } from 'react'
+import {ChangeEvent, useEffect, useState } from 'react'
 import './App.css';
 import axios from 'axios';
-import {IoMdTrash} from "react-icons/io";
-import {BsPencilFill, BsRecord} from "react-icons/bs";
-import Modal from 'component/Modal';
-import { Fragment } from 'react';
-import {EditTable} from 'component/EditTable';
-//import { Modal } from 'react-bootstrap';
-
-
+import EditTable from 'component/EditTable';
+import NormalTable from 'component/NormalTable';
 export interface userSchema{
 
   id:number,
@@ -28,22 +22,17 @@ e:ChangeEvent
 }
 
 
-function App() {
+export function App() {
   
 
 const [data, setData] = useState ([]);
 const [search, setSearch] = useState ("");
 const [isMaleChecked, setIsMaleChecked] = useState(false);
 const [isFemaleChecked, setIsFemaleChecked] = useState(false);
-const [genderFilter, setGenderFilter] = useState("all");
-const checkBox1 = useRef(null);
-const checkBox2 = useRef(null);
-const [modalOpen, setModalOpen] = useState(false);
-const [isVisible, setIsVisible] = useState(true);
+
 
   const [editID, setEditID] = useState(null);
- 
-  const [editData, setEditData]=useState( {
+  const [editData, setEditData]= useState( {
     first_name:'',
       gender:'',
       education:'',
@@ -55,7 +44,8 @@ const [isVisible, setIsVisible] = useState(true);
      linkedin_skills:'',
       ip_address:'',
     });
- 
+  
+
  
 
  useEffect(() => {
@@ -82,32 +72,7 @@ const callPromise =() =>{
   console.log(myPromise)
 }*/
 
-function handleFemaleChange() {
- /* if (genderFilter==="all")
-  {
-    setData(data)
-  }*/
-  if(!isMaleChecked)
-  { setIsFemaleChecked(!isFemaleChecked)
-    //setIsMaleChecked(isMaleChecked)
-    const malearray = data.filter((gender:userSchema) =>{
-      return gender.gender.includes("Male")});
-  setData(malearray)
-  }
- else if(isFemaleChecked && isMaleChecked)
- 
-  { setIsFemaleChecked(!isFemaleChecked)
-    const femalearray = data.filter((gender:userSchema) =>{
-    return gender.gender.includes("Female")});
-    setData(femalearray)
-  }
- else { console.log("siker")}
- /*{  setIsFemaleChecked(!isFemaleChecked)
-    const malearray = data.filter((gender:userSchema) =>{
-    return gender.gender.includes("Male")});
-setData(malearray)*/
-  //}
-};
+
 
 
 
@@ -122,46 +87,83 @@ const searchedName = data.filter((name:userSchema) =>{
 
 
 
-const handleEditData = (event, user:userSchema) => {
-  // event.preventDefault();
-   console.log(user.id);
-  setEditID(user.id);
-  
- //setModalOpen(true);
- //const fieldName = event.target.getAttribute("name");
-/* const fieldName = event.target.attributes.getNamedItem("name").value;
- console.log(fieldName);
- const fieldValue = event.target.value;
- 
- const newData = { ...editData };
- newData[fieldName] = fieldValue;
- 
- setEditData(newData);*/
-
+  const handleEditData = (user:userSchema) => {
+    // event.preventDefault();
+     console.log(user.id);
+    setEditID(user.id);
+    
+   //setModalOpen(true);
+   //const fieldName = event.target.getAttribute("name");
+  /* const fieldName = event.target.attributes.getNamedItem("name").value;
+   console.log(fieldName);
+   const fieldValue = event.target.value;
    
-   const formValues ={
-    // fist_name: user.first_name,
-    // id:user.id,
-     education:user.education,
-     age: user.age,
-     gender: user.gender,
-     email: user.email,
-     country_of_birth: user.country_of_birth,
-     job_title:user.job_title,
-     user_name:user.user_name,
-   linkedin_skills:user.linkedin_skills,
-   ip_address:user.ip_address,
-   first_name:user.first_name,
- 
-   };
- 
-   setEditData(formValues);
+   const newData = { ...editData };
+   newData[fieldName] = fieldValue;
+   
+   setEditData(newData);*/
   
- };
+     
+     const formValues ={
+      // fist_name: user.first_name,
+      // id:user.id,
+       education:user.education,
+       age: user.age,
+       gender: user.gender,
+       email: user.email,
+       country_of_birth: user.country_of_birth,
+       job_title:user.job_title,
+       user_name:user.user_name,
+     linkedin_skills:user.linkedin_skills,
+     ip_address:user.ip_address,
+     first_name:user.first_name,
+   
+     };
+   
+     setEditData(formValues);
+    
+   };
 
-const handleCancelClick = () => {
-  setEditID(null);
-};
+  
+  const handleCancelClick = (setEditID) => {
+    setEditID(null);
+  };
+  
+  function handleEditSubmit () {
+  
+    const savePost = {
+      id: editID,
+      education: editData.education,
+      gender: editData.gender,
+      email: editData.email,
+      first_name:editData.first_name,
+      job_title:editData.job_title,
+      user_name:editData.user_name,
+      country_of_birth:editData.country_of_birth,
+      ip_address:editData.ip_address,
+      age:editData.age,
+      linkedin_skills:editData.linkedin_skills,
+  
+  
+    }
+  
+    const newUserData = [ ...data ]
+  console.log(newUserData)
+    const formIndex =data.findIndex((post) => post.id === editID);
+  console.log(formIndex)
+    newUserData[formIndex] = savePost
+  
+    setData(newUserData)
+    setEditID(null)
+    console.log(editID);
+  };
+  
+  const handleEditClick = (input) => (e) => {
+    e.preventDefault()
+    
+    setEditData({ ...editData, [input]: e.target.value });
+    console.log(editData);
+  }
 
 
 const handleDeleteData = (newitem:userSchema) =>
@@ -178,36 +180,43 @@ const femalearray = data.filter((gender:userSchema) =>{
 const malearray = data.filter((gender:userSchema) =>{
    return gender.gender.includes("Male")});
 
-/*function handleFemaleChange (item) {
-  //const malearray = data.filter((gender:userSchema) =>{
-  //  return gender.gender.includes("Male")});
-  //const checked=!isFemaleChecked;
-  setIsFemaleChecked(!isFemaleChecked);
- // setData((prev) =>( !isMaleChecked && !isFemaleChecked) ? prev.filter((sc)=> sc !== "Male") : [...prev, item])
- // console.log("male")
-  //setData(data)
-//(!isMaleChecked && !isFemaleChecked)? setData(malearray) : [...gender, item]
-//console.log("működhetne de nem")
-//setData((pre) => {
- // return  pre.filter((x) => x !== item)}
- 
-  
- (  !isFemaleChecked &&  isMaleChecked) ?
- // {setIsFemaleChecked(!isFemaleChecked)
- setData(femalearray) :
-    setData(malearray)
-  
-};*/
+   function handleFemaleChange() {
+    setIsFemaleChecked(!isFemaleChecked)
+    if(!isFemaleChecked)
+    {
+      //setIsFemaleChecked(!isFemaleChecked)
+      setData(malearray)
+        console.log("male")
+      //setIsMaleChecked(isMaleChecked)
+    
+    //setIsMaleChecked(isMaleChecked)
+    }
+  /* else if(isFemaleChecked && isMaleChecked)
+   
+    { setIsFemaleChecked(!isFemaleChecked)
+      const femalearray = data.filter((gender:userSchema) =>{
+      return gender.gender.includes("Female")});
+      setData(femalearray)
+      console.log("female emberkék")
+    }*/
+   else {
+    setData(data)
+    console.log("mindenki")}
 
+  
+  };
 
 
 function handleMaleChange (item) {
 
   //setIsMaleChecked(!isMaleChecked)
   //setIsFemaleChecked(!isFemaleChecked)
-  
+  setIsMaleChecked(!isMaleChecked)
+    
+    setIsFemaleChecked(isFemaleChecked)
     setData(femalearray)
-    console.log("male")
+    console.log("female")
+
 
  /*setIsMaleChecked(!isMaleChecked);
 
@@ -235,41 +244,6 @@ function handleMaleChange (item) {
     
       };
 
-
-  const handleEditClick = (input) => (e) => {
-    e.preventDefault()
-    
-    setEditData({ ...editData, [input]: e.target.value });
-    console.log(editData);
-  }
-
-function handleEditSubmit ()  {
-
-  const savePost = {
-    id: editID,
-    education: editData.education,
-    gender: editData.gender,
-    email: editData.email,
-    first_name:editData.first_name,
-    job_title:editData.job_title,
-    user_name:editData.user_name,
-    country_of_birth:editData.country_of_birth,
-    ip_address:editData.ip_address,
-    age:editData.age,
-
-
-  }
-
-  const newUserData = [ ...data ]
-console.log(newUserData)
-  const formIndex =data.findIndex((post) => post.id === editID);
-console.log(formIndex)
-  newUserData[formIndex] = savePost
-
-  setData(newUserData)
-  setEditID(null)
-  console.log(editID);
-};
   return (
     <div>
     
@@ -304,57 +278,17 @@ console.log(formIndex)
                  
                    editID === item.id  ? (
 
-                    <tr>
-                    <td><input type="text"  placeholder="Enter a name" name="name"  onChange={handleEditClick("first_name")}/></td>
-                    <td><input type="text" placeholder="Male or Female" name="gender"  onChange={handleEditClick("gender")}/></td>
-                    <td> <input type="text" placeholder="Enter the education" name="education" onChange={handleEditClick("education")}/></td>
-                    <td><input type="text"  placeholder="Enter the job title" name="job"  onChange={handleEditClick("job_title")}/></td>
-                    <td><input type="number" placeholder="Enter the age" name="age"  onChange={handleEditClick("age")} /></td> 
-                    <td><input type="text"  name="country" placeholder="Enter the country" onChange={handleEditClick("country")} /></td>
-                    <td><input type="email"  placeholder="Enter the email address" name="email" onChange={handleEditClick("email")}/> </td>
-                    <td><input type="text"  placeholder="Enter the user name" name="userName"  onChange={handleEditClick("userName")}/></td>
-                    <td><input type="text" placeholder="Enter the linkedin skills" name="linkedin_skills" onChange={handleEditClick("linkedin_skills")}/></td>
-                    <td> <input type="text"  placeholder="Enter the IP address" name="ipAddress" onChange={handleEditClick("ipAddress")}/> </td>
-                          
-                          <div className="footer">
-                          <button 
-                          
-                          onClick={() => {
-                            handleCancelClick()
-                            }}
-                            id="cancelBtn"
-                          >
-                 
-                            Cancel
-                          </button>
-                          <button type="submit"
-                        onClick={() => handleEditSubmit()}
-                            id="okBtn"
-                          >
-                          OK
-                          </button>
-                          </div>
-                 </tr>
+                    <EditTable handleCancelClick={handleCancelClick}
+                    handleEditClick={handleEditClick}
+                    handleEditSubmit={handleEditSubmit}
+                    editData={item}
+                   />
                  ):
 
-                  <tr className="tablebody" >
-                       <td >{item.first_name} {item.last_name}</td>
-                         <td>{item.gender}</td>
-                         <td>{item.education}</td>
-                         <td>{item.job_title}</td>
-                         <td>{item.age}</td>
-                         <td>{item.country_of_birth}</td>
-                         <td>{item.email}</td>
-                         <td>{item.user_name}</td>
-                         <td>{item.linkedin_skills}</td>
-                         <td>{item.ip_address}</td> 
-                       <div>
-                         <td><button onClick={() => handleDeleteData(item)} id="trash"><IoMdTrash></IoMdTrash></button> 
-                         <button onClick={(event) => handleEditData(event,item)} id="pencil"><BsPencilFill ></BsPencilFill></button> </td>
-                         </div>
-                       
-                       </tr>
-                    
+              <NormalTable
+              handleDeleteData={handleDeleteData}
+              handleEditData={handleEditData}
+                    item={item}/>
                   
               )) }
                   

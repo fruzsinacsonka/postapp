@@ -1,24 +1,12 @@
 .input-header{
 display: flex;
-padding: 2px 64px 64px;
+padding: 10px 64px;
 background-color: darkcyan;
 position: relative;
 
 }
-.input{
-  width: 200px;
-  margin-top: 20px;
-  margin-left: 600px;
-  height: 30px;
-  position: relative;
-}
-.input-header p{
-  margin-left: 10px;
-  margin-top: 25px;
-  position: relative;
-  
-}
-.modalStyle {
+
+/*.modalStyle {
   padding:2px;
   align-items: center;
   background: #000;
@@ -30,31 +18,32 @@ position: relative;
   padding: 30px;
   border-radius: 20px 20px 0 0;
   background-color: aqua;
-}
-.inputModal {
-  
-}
-.tablebody{
-  border: 2px;
-  border-style: groove;
-}
+}*/
 
-#cancelBtn {
+
+tr{
+  align-items: center;
+  font-family: sans-serif;
+  justify-content: center;
+  padding: 30px;
+  align-items: center;
+}
+/*#cancelBtn {
   background-color: crimson;
 }
 
 #okBtn {
   background-color:greenyellow;
 } 
+*/
 
 
-
-.footer {
+/*.footer {
   flex: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
+}*/
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
